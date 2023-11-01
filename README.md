@@ -38,7 +38,7 @@ This script is written in Python and utilizes the Biopython library to fetch gen
 
 Run the script by executing the following command in the terminal:
 ```
-python your_script_name.py
+python get_nucleotide_sequences.py
 ```
 
 Note: Make sure the conda environment is activated, and you have set your email address in the `Entrez.email` field in the script.
