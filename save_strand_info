@@ -1,0 +1,39 @@
+from Bio import Entrez
+from xml.etree import ElementTree as ET
+
+Entrez.email = "saher.raouf@ucalgary.ca"  # Replace with your email
+
+def get_gene_strand_info(gene):
+    handle = Entrez.esearch(db="gene", term=gene)
+    record = Entrez.read(handle)
+    handle.close()
+
+    if record["IdList"]:
+        gene_id = record["IdList"][0]
+        handle = Entrez.efetch(db="gene", id=gene_id, rettype="gb", retmode="xml")
+        xml_data = handle.read()
+        handle.close()
+
+        tree = ET.ElementTree(ET.fromstring(xml_data))
+        root = tree.getroot()
+
+        for elem in root.iter("Seq-interval_strand"):
+            strand_info = elem.find("Na-strand").attrib["value"]
+            return {"gene": gene, "strand": strand_info}
+    return {"gene": gene, "strand": "Information not available"}
+
+# Read gene names from a file
+with open("gene_list.txt", "r") as file:
+    gene_list = file.read().splitlines()
+
+# Store results in a list
+results = []
+for gene in gene_list:
+    strand_info = get_gene_strand_info(gene)
+    results.append(strand_info)
+
+# Save results to a file
+with open("gene_strand_info_results.txt", "w") as output_file:
+    for result in results:
+        output_file.write(f"{result['gene']}: {result['strand']}\n")
+
