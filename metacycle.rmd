@@ -1,0 +1,14 @@
+```{r env, include=FALSE}
+Sys.setenv(R_LIBS = "/isiseqruns/jfreeman_tmp_home/bin/miniconda3/envs/metacycle/lib/R/library")
+library(MetaCycle)
+timepoints <- seq(100, by = 12.5, length.out = 57)
+```
+
+```{r}
+result <- meta2d(
+    infile = "/isiseqruns/jfreeman_tmp_home/saher_collab/get_nucleotide_seq/Sub743_detrended_10_9_transposed_100_800_56samples (1).csv",
+    filestyle = "csv", outdir = "metaoutFINAL",
+    timepoints = timepoints, minper = 300, maxper = 420,
+    cycMethod = c("LS"), outIntegration = "noIntegration"
+)
+```
